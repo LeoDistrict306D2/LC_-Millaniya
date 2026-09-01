@@ -1,0 +1,170 @@
+@import 'tailwindcss';
+
+/*
+ * Leo Club of Millaniya — "Village Weave"
+ *
+ * A rural club in the Kalutara district. The system borrows from handloom:
+ * woven bands separate the sections, panels carry asymmetric corner radii
+ * (nothing handmade is symmetrical), and the palette is dye colours —
+ * terracotta, ochre, deep green on undyed cream.
+ *
+ * Photography is the loudest element on the page, because the work is about
+ * people and the people are the point.
+ *
+ * Token names are ROLES, not hues.
+ */
+
+@theme {
+  /* --- Surfaces ------------------------------------------------------- */
+  --color-page: #faf5ec;
+  --color-panel: #f2e9d9;
+  --color-inverse: #2f4a32;
+  --color-on-inverse: #f6f1e5;
+
+  /* --- Text ----------------------------------------------------------- */
+  --color-ink: #2b2118;
+  --color-ink-muted: #5c4b3c;
+  --color-ink-faint: #8a7663;
+
+  /* --- Accents --------------------------------------------------------- */
+  /* Terracotta carries interaction; ochre is a warm backing tone that must
+     never carry body text. */
+  --color-accent: #b4553a;
+  --color-accent-strong: #94422b;
+  --color-warm: #d69a3c;
+
+  /* --- Lines ----------------------------------------------------------- */
+  --color-rule: #e3d7c2;
+  --color-rule-strong: #c4b195;
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-heading: var(--font-bitter), ui-serif, Georgia, serif;
+  --font-body: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+
+  --text-village: 3.75rem;
+  --text-village--line-height: 1.04;
+  --text-village--letter-spacing: -0.02em;
+
+  --ease-warm: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-warm) 40%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  .measure {
+    max-width: 38rem;
+  }
+
+  .band {
+    padding-block: 4.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .band {
+      padding-block: 6.5rem;
+    }
+  }
+
+  /*
+   * The woven band — a handloom stripe rendered entirely in CSS gradients, so
+   * it costs nothing to load and scales to any width. Used to separate
+   * sections in place of a rule.
+   */
+  .weave {
+    height: 0.75rem;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--color-accent) 0 0.5rem,
+        transparent 0.5rem 1rem
+      ),
+      repeating-linear-gradient(
+        90deg,
+        var(--color-warm) 0.25rem 0.75rem,
+        transparent 0.75rem 1.25rem
+      );
+    background-color: var(--color-inverse);
+  }
+
+  /*
+   * Asymmetric corners. Nothing woven by hand comes out square, and the
+   * alternating radius is what stops a grid of photographs reading as a
+   * spreadsheet.
+   */
+  .organic {
+    border-radius: 2rem 0.375rem 2rem 0.375rem;
+    overflow: hidden;
+  }
+
+  .organic-alt {
+    border-radius: 0.375rem 2rem 0.375rem 2rem;
+    overflow: hidden;
+  }
+
+  .reveal {
+    transition:
+      opacity 650ms var(--ease-warm),
+      transform 650ms var(--ease-warm);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal.is-hidden {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
